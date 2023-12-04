@@ -107,3 +107,7 @@ CREATE TABLE TeamMatchStatistics (
     FOREIGN KEY (MatchID) REFERENCES Matches(MatchID),
     FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
 );
+
+CREATE TABLE ProcessedGameDays (
+    GameDayID VARCHAR(255) PRIMARY KEY
+);

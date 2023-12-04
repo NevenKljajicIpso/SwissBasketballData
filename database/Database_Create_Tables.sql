@@ -109,5 +109,5 @@ CREATE TABLE TeamMatchStatistics (
 );
 
 CREATE TABLE ProcessedGameDays (
-    GameDayID VARCHAR(255) PRIMARY KEY
+    GameDay DATE PRIMARY KEY
 );

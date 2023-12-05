@@ -31,8 +31,12 @@ def process_game_stats(match_id, team1_id, team2_id, stats_link):
                         db.commit()
                         player_id = cursor.lastrowid
 
-                    cursor.execute("INSERT INTO PlayerTeamAffiliation (PlayerID, TeamID) VALUES (%s, %s) ON DUPLICATE KEY UPDATE TeamID = %s", (player_id, team_id, team_id))
-                    db.commit()
+                        # Überprüfe, ob die Kombination Spieler-Team bereits existiert
+                        cursor.execute("SELECT * FROM PlayerTeamAffiliation WHERE PlayerID = %s AND TeamID = %s", (player_id, team_id))
+                        if not cursor.fetchone():
+                            # Füge den neuen Spieler-Team-Eintrag nur hinzu, wenn er noch nicht existiert
+                            cursor.execute("INSERT INTO PlayerTeamAffiliation (PlayerID, TeamID) VALUES (%s, %s)", (player_id, team_id))
+                            db.commit()
 
                     insert_stats_query = "INSERT INTO PlayerMatchStatistics (MatchID, PlayerID, MinutesPlayed, TwoPointsMade, TwoPointsAttempt, TwoPointsPercentage, ThreePointsMade, ThreePointsAttempt, ThreePointsPercentage, FreeThrowMade, FreeThrowAttempt, FreeThrowPercentage, OffensiveRebound, DefensiveRebound, TotalRebound, Assists, Turnovers, Steals, Blocks, Fouls, FoulsOn, Efficency, TotalPoints) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                     cursor.execute(insert_stats_query, (match_id, player_id, data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22]))
@@ -59,6 +63,7 @@ time.sleep(1)
 
 game_days = driver.find_elements(By.CSS_SELECTOR, 'div[id^="anchor-"]')
 games_data = []
+new_games_processed = False  # Flag zur Überprüfung neuer Spiele
 
 # URLs und andere Daten für jedes Spiel sammeln
 for game_day in game_days:
@@ -93,10 +98,15 @@ for game in games_data:
     db.commit()
     match_id = cursor.lastrowid
     process_game_stats(match_id, team1_id, team2_id, stats_link)
+    new_games_processed = True  # Setze das Flag, wenn ein neues Spiel verarbeitet wird
 
-# Markiere den Spieltag als verarbeitet in der processedgamedays Tabelle
-cursor.execute("INSERT IGNORE INTO processedgamedays (GameDay) VALUES (%s)", (formatted_date,))
-db.commit()
+    # Markiere den Spieltag als verarbeitet in der processedgamedays Tabelle
+    cursor.execute("INSERT IGNORE INTO processedgamedays (GameDay) VALUES (%s)", (formatted_date,))
+    db.commit()
+
+# Überprüfen, ob neue Spiele verarbeitet wurden
+if not new_games_processed:
+    print("Keine neuen Spiele zurzeit")
 
 driver.quit()
 cursor.close()

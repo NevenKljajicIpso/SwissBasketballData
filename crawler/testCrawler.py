@@ -10,23 +10,29 @@ from database.db_config import db_config
 
 # Funktion zum Verarbeiten der Statistiken eines Spiels
 def process_game_stats(match_id, team1_id, team2_id, stats_link):
+    # Öffnet die Seite mit den Spielstatistiken
     driver.get(stats_link)
     time.sleep(2)
 
+    # Sucht nach den Tabellen mit den Spielerstatistiken für beide Teams
     team_tables = driver.find_elements(By.CSS_SELECTOR, "table[id^='DataTables_Table_']")
     for table_index, team_id in enumerate([team1_id, team2_id]):
+        # Durchläuft alle Zeilen in der Tabelle für jedes Team
         player_rows = team_tables[table_index].find_elements(By.CSS_SELECTOR, 'tbody > tr')
         for row in player_rows:
+            # Sammelt Daten aus jeder Zelle in der Zeile
             data = [td.text for td in row.find_elements(By.TAG_NAME, 'td') if td.text.strip() != '']
             if len(data) < 24:
                 player_name = data[1]
 
                 try:
+                    # Überprüft, ob der Spieler bereits in der Datenbank vorhanden ist
                     cursor.execute("SELECT PlayerID FROM Players WHERE PlayerName = %s", (player_name,))
                     result = cursor.fetchone()
                     if result:
                         player_id = result[0]
                     else:
+                        # Fügt den Spieler hinzu, wenn er noch nicht existiert
                         cursor.execute("INSERT INTO Players (PlayerName) VALUES (%s)", (player_name,))
                         db.commit()
                         player_id = cursor.lastrowid
@@ -38,12 +44,14 @@ def process_game_stats(match_id, team1_id, team2_id, stats_link):
                             cursor.execute("INSERT INTO PlayerTeamAffiliation (PlayerID, TeamID) VALUES (%s, %s)", (player_id, team_id))
                             db.commit()
 
+                    # Fügt die gesammelten Spielerstatistiken in die Datenbank ein
                     insert_stats_query = "INSERT INTO PlayerMatchStatistics (MatchID, PlayerID, MinutesPlayed, TwoPointsMade, TwoPointsAttempt, TwoPointsPercentage, ThreePointsMade, ThreePointsAttempt, ThreePointsPercentage, FreeThrowMade, FreeThrowAttempt, FreeThrowPercentage, OffensiveRebound, DefensiveRebound, TotalRebound, Assists, Turnovers, Steals, Blocks, Fouls, FoulsOn, Efficency, TotalPoints) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                     cursor.execute(insert_stats_query, (match_id, player_id, data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[16], data[17], data[18], data[19], data[20], data[21], data[22]))
                     db.commit()
                 except mysql.connector.Error as err:
                     print(f"Database error: {err}")
 
+    # Verarbeitet Teamstatistiken in ähnlicher Weise wie Spielerstatistiken
     team_stats_tables = driver.find_elements(By.CSS_SELECTOR, "table[id^='DataTables_Table_']")
     for table_index, team_id in enumerate([team1_id, team2_id]):
         tfoot = team_stats_tables[table_index].find_element(By.TAG_NAME, 'tfoot')
@@ -61,6 +69,7 @@ driver = webdriver.Chrome()
 driver.get("https://swiss.basketball/de/national-competitions/nlb/men/schedule")
 time.sleep(1)
 
+# Sammelt Daten von allen Spieltagen auf der Seite
 game_days = driver.find_elements(By.CSS_SELECTOR, 'div[id^="anchor-"]')
 games_data = []
 new_games_processed = False  # Flag zur Überprüfung neuer Spiele
@@ -77,6 +86,7 @@ for game_day in game_days:
 
     games = game_day.find_elements(By.CSS_SELECTOR, 'table.schedule-table > tbody > tr')
 
+    # Sammelt Daten für jedes Spiel des Spieltags
     for i in range(0, len(games), 2):
         team1 = games[i].find_element(By.CSS_SELECTOR, 'td:nth-child(3)').text
         team2 = games[i+1].find_element(By.CSS_SELECTOR, 'td:nth-child(3)').text

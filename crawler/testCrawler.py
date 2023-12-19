@@ -74,7 +74,7 @@ game_days = driver.find_elements(By.CSS_SELECTOR, 'div[id^="anchor-"]')
 games_data = []
 new_games_processed = False  # Flag zur Überprüfung neuer Spiele
 
-# URLs und andere Daten für jedes Spiel sammeln
+# URLs und Datum für jedes Spiel sammeln
 for game_day in game_days:
     date = game_day.find_element(By.CSS_SELECTOR, 'div.mt-6.text-white.p-2').text
     formatted_date = datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")

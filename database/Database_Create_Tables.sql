@@ -72,7 +72,6 @@ CREATE TABLE PlayerMatchStatistics (
     FoulsOn INT,
     Efficency INT,
     TotalPoints INT,
-    -- Other player-specific match stats can be added here
     FOREIGN KEY (MatchID) REFERENCES Matches(MatchID),
     FOREIGN KEY (PlayerID) REFERENCES Players(PlayerID)
 );
@@ -103,7 +102,6 @@ CREATE TABLE TeamMatchStatistics (
     FoulsOn INT,
     Efficency INT,
     TotalPoints INT,
-    -- Other team-specific match stats can be added here
     FOREIGN KEY (MatchID) REFERENCES Matches(MatchID),
     FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
 );

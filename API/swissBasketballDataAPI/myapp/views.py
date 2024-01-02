@@ -2,7 +2,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import PlayerSerializer, TeamSerializer, PlayerMatchStatisticSerializer
-from .models import Player, PlayerMatchStatistic, Team, TeamMatchStatistic
+from .models import Player, PlayerMatchStatistic, Team, TeamMatchStatistic, PlayerTeamAffiliation
 from django.db.models import Avg
 
 @api_view(['GET'])
@@ -54,9 +54,12 @@ def search_player(request):
                 avg_efficiency=Avg('Efficency'),
                 avg_total_points=Avg('TotalPoints')
             )
+            team_affiliations = PlayerTeamAffiliation.objects.filter(PlayerID=player.PlayerID)
+            team_names = [affiliation.TeamID.TeamName for affiliation in team_affiliations]
             player_data = {
                 "player_id": player.PlayerID,
                 "player_Name": player.PlayerName,
+                "teams": team_names,
                 "average_statistics": avg_stats
             }
             player_stats.append(player_data)

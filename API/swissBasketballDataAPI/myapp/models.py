@@ -95,3 +95,12 @@ class TeamMatchStatistic(models.Model):
     class Meta:
         db_table = 'TeamMatchStatistics'
         managed = False
+
+class PlayerTeamAffiliation(models.Model):
+    AffiliationID = models.AutoField(primary_key=True)
+    PlayerID = models.ForeignKey('Player', on_delete=models.CASCADE, db_column='PlayerID')
+    TeamID = models.ForeignKey('Team', on_delete=models.CASCADE, db_column='TeamID')
+
+    class Meta:
+        managed = False
+        db_table = 'PlayerTeamAffiliation'

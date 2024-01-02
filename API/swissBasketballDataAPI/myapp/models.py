@@ -3,7 +3,7 @@ from django.db import models
 # Player Model
 class Player(models.Model):
     PlayerID = models.AutoField(primary_key=True)
-    playerName = models.CharField(max_length=255)
+    PlayerName = models.CharField(max_length=255)
 
     def __str__(self):
         return self.PlayerName
@@ -65,3 +65,33 @@ class Team(models.Model):
     class Meta:
         managed = False
         db_table = 'teams'
+
+class TeamMatchStatistic(models.Model):
+    StatID = models.AutoField(primary_key=True)
+    MatchID = models.ForeignKey('Match', on_delete=models.CASCADE, db_column='MatchID')
+    TeamID = models.ForeignKey('Team', on_delete=models.CASCADE, db_column='TeamID')
+    MinutesPlayed = models.IntegerField()
+    TwoPointsMade = models.IntegerField()
+    TwoPointsAttempt = models.IntegerField()
+    TwoPointsPercentage = models.FloatField()
+    ThreePointsMade = models.IntegerField()
+    ThreePointsAttempt = models.IntegerField()
+    ThreePointsPercentage = models.FloatField()
+    FreeThrowMade = models.IntegerField()
+    FreeThrowAttempt = models.IntegerField()
+    FreeThrowPercentage = models.FloatField()
+    OffensiveRebound = models.IntegerField()
+    DefensiveRebound = models.IntegerField()
+    TotalRebound = models.IntegerField()
+    Assists = models.IntegerField()
+    Turnovers = models.IntegerField()
+    Steals = models.IntegerField()
+    Blocks = models.IntegerField()
+    Fouls = models.IntegerField()
+    FoulsOn = models.IntegerField()
+    Efficency = models.IntegerField()
+    TotalPoints = models.IntegerField()
+
+    class Meta:
+        db_table = 'TeamMatchStatistics'
+        managed = False

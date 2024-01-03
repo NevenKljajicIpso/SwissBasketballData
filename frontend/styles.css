@@ -1,0 +1,57 @@
+body {
+    font-family: 'Inter', 'Arial', sans-serif;
+    color: #333;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+  
+.container {
+    max-width: 1020px;
+}
+
+.row {
+    align-items: center;
+}
+
+.main {
+    margin-top: 10em;
+}
+
+.searchbar {
+    margin-bottom: 10em;
+}
+
+.namebox {
+    background-color: #CDCCCC;
+    border-radius: 15px;
+    position: relative;
+}
+
+.basketball-logo {
+    width: 250px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(240%, -50%);
+}
+
+.player-name {
+    font-size: 60px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.player-club {
+    font-size: 30px;
+}
+
+.mainBox {
+    background-color: #EFEFEF;
+    border-radius: 15px;
+}
+
+.keyStatsBox .pointsBox .reboundBox .additionalstatsBox {
+    background-color: #fff;
+    border-radius: 15px;   
+}

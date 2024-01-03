@@ -51,7 +51,22 @@ body {
     border-radius: 15px;
 }
 
-.keyStatsBox .pointsBox .reboundBox .additionalstatsBox {
+.keyStatsBox {
+    background-color: #fff;
+    border-radius: 15px;   
+}
+
+.pointsBox {
+    background-color: #fff;
+    border-radius: 15px;   
+}
+
+.reboundBox {
+    background-color: #fff;
+    border-radius: 15px;   
+}
+
+.additionalstatsBox {
     background-color: #fff;
     border-radius: 15px;   
 }

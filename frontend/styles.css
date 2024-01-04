@@ -33,7 +33,7 @@ body {
     position: absolute;
     right: 0;
     top: 50%;
-    transform: translate(240%, -50%);
+    transform: translate(240%, -75%);
 }
 
 .player-name {
@@ -69,4 +69,31 @@ body {
 .additionalstatsBox {
     background-color: #fff;
     border-radius: 15px;   
+}
+
+.box-title {
+    font-weight: bold;
+}
+
+.autocomplete-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    background-color: white;
+    z-index: 1000;
+}
+
+.autocomplete-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.autocomplete-list li:hover {
+    background-color: #eee;
 }

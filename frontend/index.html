@@ -28,17 +28,22 @@
     </header>
 
     <main class="main container">
+
         <!-- Search Bar -->
         <div class="searchbar row mb-8 justify-content-center">
             <div class="col-8">
-                <input type="text" class="form-control" placeholder="Search by player or team name">
+                <input id="search-input" type="text" class="form-control" placeholder="Search by player or team name">
+                <ul id="autocomplete-results" class="autocomplete-list">
+                    <!-- Autocomplete suggestions will be populated here -->
+                </ul>
             </div>
         </div>
+
         <!-- Name Box -->
-        <div class="namebox row p-3 mb-5 position-relative">
+        <div class="namebox container p-3 mb-5 position-relative">
             <div class="col-md-8">
-                <h2 class="player-name">Kljajic Neven</h2>
-                <p class="player-club">GC Basketball</p>
+                <h2 class="player-name"></h2>
+                <p class="player-club">Club Name</p>
             </div>
             <div class="col-md-4 position-absolute">
                 <img src="./images/Basketball-Big-Logo.svg" alt="Basketball" class="basketball-logo">
@@ -46,24 +51,28 @@
         </div>
         
         <!-- Content Box -->
-        <div class="mainBox row p-3 mb-3">
+        <div class="mainBox container p-3 mb-3">
             <!-- Key Stats Box -->
-            <div class="keyStatsBox row p-3 m-5">
-
+            <h2 class="box-title ml-5 mt-5">Key Stats</h2>
+            <div class="keyStatsBox row p-3 ml-5 mr-5">
+                
             </div>
 
             <!-- Points Box -->
-            <div class="pointsBox row p-3 m-5">
+            <h2 class="box-title ml-5 mt-5">Points</h2>
+            <div class="pointsBox row p-3 ml-5 mr-5">
 
             </div>
 
             <!-- Rebound Box -->
-            <div class="reboundBox row p-3 m-5">
+            <h2 class="box-title ml-5 mt-5">Rebounds</h2>
+            <div class="reboundBox row p-3 ml-5 mr-5">
 
             </div>
 
             <!-- Additional Stats Box -->
-            <div class="additionalstatsBox row p-3 m-5">
+            <h2 class="box-title ml-5 mt-5">Additional Stats</h2>
+            <div class="additionalstatsBox row p-3 ml-5 mr-5 mb-5">
 
             </div>
         </div>              
@@ -82,5 +91,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="data_test.js"></script>
 </body>
 </html>

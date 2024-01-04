@@ -1,8 +1,5 @@
 const searchInput = document.getElementById('search-input');
 
-const playerNameHtml = document.querySelector('.player-name');
-const playerClubHtml = document.querySelector('.player-club');
-
 document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', function() {
         const searchText = searchInput.value;
@@ -28,17 +25,12 @@ const searchAutocomplete = async (searchTerm) => {
 // Funktion, um Spielerstatistiken zu holen und in der Konsole anzuzeigen
 const fetchStatsFunction = async (playerName) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/players/search/?format=json&name=${encodeURIComponent(playerName)}`);
-      const data = await response.json();
-      console.log('Player statistics:', data[0]);
-
-      displayData(data);
-
-      //playerNameHtml.textContent = data[0].player_Name;
-      //playerClubHtml.textContent = data[0].teams[0];
-
+        const response = await fetch(`http://127.0.0.1:8000/players/search/?format=json&name=${encodeURIComponent(playerName)}`);
+        const data = await response.json();
+        console.log('Player statistics:', data[0]);
+        displayData(data[0]);
     } catch (error) {
-      console.error('Error fetching player statistics:', error);
+        console.error('Error fetching player statistics:', error);
     }
 };
   
@@ -57,8 +49,10 @@ const updateDropdown = (suggestions) => {
     });
 };
 
-
 const displayData = (stats) => {
-    playerNameHtml.textContent = data[0].player_Name;
-    playerClubHtml.textContent = data[0].teams[0];
-}
+    const playerNameHtml = document.querySelector('.player-name');
+    const playerClubHtml = document.querySelector('.player-club');
+
+    playerNameHtml.textContent = stats.player_Name;
+    playerClubHtml.textContent = stats.teams[0];
+};
